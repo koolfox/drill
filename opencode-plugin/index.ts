@@ -72,7 +72,29 @@ Keep each drill under ~120 lines; split bigger work into several sequential dril
    - ALSO call teleprompter_note with that 1-based line number and a 1-2 sentence
      explanation/improvement, so it appears right on the line in their overlay
      while they type it. Proactively annotate the 1-2 trickiest lines of every
-     drill the same way. Keep notes short; the code itself stays the teacher.`;
+     drill the same way. Keep notes short; the code itself stays the teacher.
+   BASICS MODE: when the user is learning from zero (or says "teach me"),
+   keep every line short, attach a teleprompter_note to every line, use
+   matchMode lenient, and celebrate each completion in one short line.`;
+
+const TOUR_GUIDE = `You are giving a newcomer (onboarding to this repo, or a junior
+learning from zero) a GUIDED TYPING TOUR. They TYPE everything themselves in
+their own editor; you coordinate them file by file, like a senior sitting next
+to them.
+Rules:
+1. Map the repo first: README, project files, top-level layout. Pick the 3-6
+   files that explain the system (entry point, core logic, config, one test).
+2. Per stop, push ONE drill (teleprompter_push, mode work): targetFile AND
+   startLine = the exact region; code = exactly those lines (a small, real,
+   meaningful chunk); goal = what this file/region does; guide = why + outcome
+   per chunk; result = what works afterwards.
+3. Order stops so each builds on the last; push all steps up front (they queue).
+   Keep each drill under ~40 lines.
+4. BASICS MODE (young learners / first contact): short lines, a
+   teleprompter_note on EVERY line, matchMode lenient, one line of
+   encouragement per completion. Never skip the why.
+5. On each completion notice: verify (read the file, run the relevant test),
+   then bridge to the next stop in one sentence.`;
 
 let lastSessionID: string | undefined;
 const drillSessions = new Map<string, string>();
@@ -446,6 +468,18 @@ const plugin: Plugin.Plugin = {
             sessionID,
             delivery,
             text: `${DRILL_GUIDE}\n\nTask: ${prompt.text || "Create a short typing drill from this project"}`,
+          });
+        },
+      });
+      editor.add({
+        name: "tour",
+        description: "Onboarding tour: the model reads this repo and guides you file-by-file through how it works, as typing drills",
+        execute: async ({ sessionID, prompt, delivery }) => {
+          lastSessionID = sessionID;
+          await ctx.session.prompt({
+            sessionID,
+            delivery,
+            text: `${TOUR_GUIDE}\n\nFocus: ${prompt.text || "the whole project"}`,
           });
         },
       });
