@@ -1,0 +1,47 @@
+<svg width="1024" height="1024" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b2652"/>
+      <stop offset="1" stop-color="#131629"/>
+    </linearGradient>
+    <radialGradient id="aurora" cx="0.62" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d3870"/>
+      <stop offset="1" stop-color="#232048"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5ee6c5"/>
+      <stop offset="1" stop-color="#5ee6c5" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  <rect x="32" y="32" width="448" height="448" rx="120" fill="url(#bg)"/>
+  <rect x="32" y="32" width="448" height="448" rx="120" fill="url(#aurora)"/>
+  <g transform="translate(-31,-31) scale(1.12)">
+  <!-- handle + trigger -->
+  <rect x="128" y="268" width="64" height="128" rx="24" fill="#1c2140"/>
+  <path d="M192 296 L222 308 L192 326 Z" fill="#f0d3a0"/>
+  <!-- battery pack -->
+  <rect x="112" y="150" width="96" height="42" rx="12" fill="#1c2140"/>
+  <rect x="124" y="160" width="34" height="10" rx="5" fill="#a9dcc0"/>
+  <!-- main body -->
+  <rect x="88" y="192" width="196" height="104" rx="44" fill="url(#body)"/>
+  <g fill="#a78bfa" opacity="0.85">
+    <rect x="112" y="216" width="52" height="12" rx="6"/>
+    <rect x="112" y="238" width="38" height="12" rx="6"/>
+  </g>
+  <!-- vents -->
+  <g fill="#12152b">
+    <rect x="196" y="216" width="10" height="46" rx="5"/>
+    <rect x="214" y="216" width="10" height="46" rx="5"/>
+  </g>
+  <!-- chuck: hex nut -->
+  <polygon points="312,196 344,214 344,252 312,270 280,252 280,214" fill="#8b96ad"/>
+  <polygon points="312,208 334,221 334,247 312,260 290,247 290,221" fill="#5b6b89"/>
+  <!-- code beam bit -->
+  <polygon points="344,224 452,238 452,252 344,266" fill="url(#beam)"/>
+  <text x="352" y="256" font-family="Menlo, monospace" font-size="26" font-weight="bold" fill="#12372a" text-anchor="start">&lt;/&gt;</text>
+  </g>
+</svg>

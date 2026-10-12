@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drill admin</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/admin.css">
+<script src="/lang.js"></script>
+</head>
+<body class="admin">
+  <!-- درگاه توکن: وقتی سرور قفل است -->
+  <div class="admin-wrap hidden" id="gate">
+    <div class="glass token-gate">
+      <h1 data-i18n="admin.title">Admin panel</h1>
+      <p data-i18n="admin.tokenNeed"></p>
+      <input class="mono" id="tokenInput" type="password" dir="ltr" autocomplete="off">
+      <div class="row" style="justify-content:center">
+        <button class="btn primary" id="tokenApply" data-i18n="admin.apply">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-wrap hidden" id="app">
+    <div class="admin-head">
+      <h1 data-i18n="admin.title">Admin panel</h1>
+      <p data-i18n="admin.tagline"></p>
+      <span class="spacer"></span>
+      <button class="btn" id="btnHub" data-i18n="admin.openHub"></button>
+      <button class="btn" id="btnOverlay" data-i18n="admin.openOverlay"></button>
+      <span class="seg" id="langSeg">
+        <button data-setlang="en">English</button><button data-setlang="fa">فارسی</button>
+      </span>
+    </div>
+
+    <div class="admin-grid">
+      <section class="glass admin-card">
+        <h2 data-i18n="admin.system">System</h2>
+        <dl class="kv" id="sysKv"></dl>
+        <ul class="plain" id="installList"></ul>
+      </section>
+      <section class="glass admin-card">
+        <h2 data-i18n="admin.live">Live state</h2>
+        <dl class="kv" id="liveKv"></dl>
+        <div class="row">
+          <button class="btn" id="btnNext" data-i18n="admin.next"></button>
+          <button class="btn" id="btnQueueClear" data-i18n="admin.queueClear"></button>
+          <button class="btn" id="btnResetNext" data-i18n="admin.resetNext"></button>
+          <button class="btn danger" id="btnResetAll" data-i18n="admin.resetAll"></button>
+        </div>
+      </section>
+    </div>
+
+    <section class="glass admin-card">
+      <h2 data-i18n="admin.drillQueue">Drill &amp; queue</h2>
+      <ul class="plain" id="queueList"></ul>
+      <div class="row">
+        <button class="btn" id="btnPushTest" data-i18n="admin.pushTest"></button>
+      </div>
+    </section>
+
+    <section class="glass admin-card">
+      <h2 data-i18n="admin.mission">Mission control</h2>
+      <ul class="plain" id="backendList"></ul>
+      <div class="field">
+        <label for="askInput" data-i18n="admin.ask">Ask the driving model</label>
+        <div class="row">
+          <input id="askInput" dir="auto" data-i18n-ph="admin.askPh" placeholder="Ask about the current drill…">
+          <button class="btn primary" id="btnAsk" data-i18n="admin.send">Send</button>
+        </div>
+        <small id="askMsg"></small>
+      </div>
+      <div class="field">
+        <label data-i18n="admin.file">Target file</label>
+        <pre class="log" id="fileView" dir="ltr"></pre>
+      </div>
+    </section>
+
+    <section class="glass admin-card">
+      <h2 data-i18n="admin.settings">Server settings</h2>
+      <div class="field">
+        <label for="setMatch" data-i18n="admin.setMatch"></label>
+        <select id="setMatch" dir="ltr">
+          <option value="exact">exact</option>
+          <option value="lenient">lenient</option>
+        </select>
+        <small data-i18n="admin.setMatchHelp"></small>
+      </div>
+      <div class="field">
+        <label for="setQueueMax" data-i18n="admin.setQueueMax"></label>
+        <input id="setQueueMax" type="number" min="1" max="100" dir="ltr">
+      </div>
+      <div class="field">
+        <label for="setNotifyMax" data-i18n="admin.setNotifyMax"></label>
+        <input id="setNotifyMax" type="number" min="10" max="500" dir="ltr">
+      </div>
+      <div class="field">
+        <label for="setVerifyTimeout" data-i18n="admin.setVerifyTimeout"></label>
+        <input id="setVerifyTimeout" type="number" min="5" max="300" dir="ltr">
+      </div>
+      <div class="row">
+        <button class="btn primary" id="btnSave" data-i18n="admin.save"></button>
+        <span id="saveMsg"></span>
+      </div>
+    </section>
+
+    <section class="glass admin-card">
+      <h2 data-i18n="admin.install">Install &amp; setup</h2>
+      <ul class="plain" id="installTargets"></ul>
+      <div class="row">
+        <button class="btn primary" id="btnInstall" data-i18n="admin.installRun"></button>
+        <button class="btn" id="btnInstallLog" data-i18n="admin.installRefresh"></button>
+      </div>
+      <div class="field">
+        <label data-i18n="admin.installLog"></label>
+        <pre class="log" id="installLog" dir="ltr"></pre>
+      </div>
+    </section>
+
+    <section class="glass admin-card">
+      <h2 data-i18n="admin.notes">Notifications</h2>
+      <ul class="plain" id="notesList"></ul>
+    </section>
+  </div>
+
+<script src="/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "teleprompter-overlay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Transparent always-on-top teleprompter overlay for the coding teleprompter",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  }
+}

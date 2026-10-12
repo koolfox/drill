@@ -1,0 +1,8 @@
+{
+  "name": "teleprompter-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "overlay/main.js",
+  "description": "Teleprompter local server + Electron overlay (CommonJS on purpose, runs with plain Node)"
+}

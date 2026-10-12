@@ -1,0 +1,42 @@
+{
+  "name": "teleprompter",
+  "displayName": "Drill",
+  "description": "Coding teleprompter: inline ghost text at the caret + live progress from the local teleprompter server (127.0.0.1:4783)",
+  "version": "1.0.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "teleprompter.open",
+        "title": "Drill: Show Window",
+        "category": "Drill"
+      },
+      {
+        "command": "teleprompter.status",
+        "title": "Drill: Show Status",
+        "category": "Drill"
+      },
+      {
+        "command": "teleprompter.reset",
+        "title": "Drill: Reset Drill",
+        "category": "Drill"
+      },
+      {
+        "command": "teleprompter.goto",
+        "title": "Drill: Go to Target Line",
+        "category": "Drill"
+      }
+    ]
+  }
+}

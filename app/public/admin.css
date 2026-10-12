@@ -1,0 +1,54 @@
+/* Admin panel — reuses style.css tokens */
+:root { color-scheme: dark; }
+body.admin {
+  margin: 0; background: #070b14; color: var(--text, #dbe4f3);
+  font-family: -apple-system, "Segoe UI", Tahoma, sans-serif;
+  padding: 28px 18px 60px;
+  /* style.css روی body overflow:hidden می‌گذارد — ادمین باید اسکرول بخورد */
+  overflow-y: auto;
+  min-height: 100vh;
+}
+.admin-wrap { max-width: 1060px; margin: 0 auto; }
+.admin-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.admin-head h1 { margin: 0; font-size: 24px; }
+.admin-head p { margin: 0; color: var(--muted, #8fa0bd); font-size: 13px; }
+.admin-head .spacer { flex: 1; }
+.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 860px) { .admin-grid { grid-template-columns: 1fr; } }
+.admin-card { padding: 18px 20px; margin-bottom: 16px; }
+.admin-card h2 { margin: 0 0 12px; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted, #8fa0bd); }
+html[lang="fa"] .admin-card h2 { letter-spacing: normal; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 7px 16px; font-size: 13px; }
+.kv dt { color: var(--muted, #8fa0bd); white-space: nowrap; }
+.kv dd { margin: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.ok { color: #35d07f; }
+.bad { color: #f5b544; }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+.btn {
+  background: #16233c; color: var(--text, #dbe4f3); border: 1px solid var(--line, #22314e);
+  border-radius: 10px; padding: 8px 14px; font-size: 13px; cursor: pointer;
+}
+.btn:hover { background: #1b2c4b; }
+.btn.primary { background: linear-gradient(135deg, #0ea5e9, #6366f1); border: none; color: #fff; font-weight: 600; }
+.btn.danger { border-color: rgba(248, 113, 113, 0.4); color: #fca5a5; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; font-size: 13px; }
+.field small { color: var(--muted, #8fa0bd); font-size: 11.5px; line-height: 1.7; }
+.field input, .field select {
+  background: #0b1322; color: var(--text, #dbe4f3); border: 1px solid var(--line, #22314e);
+  border-radius: 10px; padding: 8px 12px; font-size: 13px; max-width: 320px;
+}
+pre.log {
+  background: #05080f; border: 1px solid var(--line, #22314e); border-radius: 10px;
+  padding: 12px 14px; font-size: 11.5px; line-height: 1.7; max-height: 300px; overflow: auto;
+  white-space: pre-wrap; overflow-wrap: anywhere; color: #9fb2d4;
+}
+ul.plain { margin: 8px 0 0; padding: 0; list-style: none; font-size: 13px; display: flex; flex-direction: column; gap: 8px; }
+ul.plain li { display: flex; gap: 10px; align-items: baseline; }
+.pill { font-size: 11px; border-radius: 999px; padding: 3px 10px; border: 1px solid var(--line, #22314e); }
+.pill.on { color: #35d07f; border-color: rgba(53, 208, 127, 0.4); }
+.pill.off { color: #f5b544; border-color: rgba(245, 181, 68, 0.35); }
+.token-gate { max-width: 420px; margin: 12vh auto 0; padding: 26px; text-align: center; }
+.token-gate input { width: 100%; box-sizing: border-box; margin-top: 12px; }
+.hidden { display: none !important; }

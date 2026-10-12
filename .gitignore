@@ -1,0 +1,8 @@
+node_modules/
+app/overlay/node_modules/
+app/state-*.json
+app/install-*.log
+.DS_Store
+.opencode/
+*.tmp
+*.log

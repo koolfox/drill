@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drill</title>
+<script>if (window.tp) document.documentElement.classList.add("electron");</script>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- hub: start & settings — shown whenever no drill is active -->
+  <div id="empty" class="empty hidden">
+    <div class="hub">
+      <section class="glass hero">
+        <div class="hero-logo" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="2.5"></rect>
+            <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7.5 14h9"></path>
+          </svg>
+        </div>
+        <div class="hero-text">
+          <h1 data-i18n="hub.title">Drill</h1>
+          <p class="tagline" data-i18n="hub.tagline"></p>
+        </div>
+        <div class="pills">
+          <span class="pill ok" id="hubServer"></span>
+        </div>
+      </section>
+
+      <div class="hub-grid">
+        <section class="glass card">
+          <h2 data-i18n="hub.connections">Connections</h2>
+          <ul class="conn" id="connList">
+            <li data-conn="opencode">
+              <span class="ico">◉</span>
+              <span class="name" data-i18n="conn.opencode"></span>
+              <span class="st off" data-i18n="conn.waiting"></span>
+            </li>
+            <li data-conn="vscode">
+              <span class="ico">&lt;/&gt;</span>
+              <span class="name" data-i18n="conn.vscode"></span>
+              <span class="st off" data-i18n="conn.waiting"></span>
+            </li>
+            <li data-conn="mcp">
+              <span class="ico">⬡</span>
+              <span class="name" data-i18n="conn.mcp"></span>
+              <span class="st off" data-i18n="conn.waiting"></span>
+            </li>
+          </ul>
+          <p class="conn-hint" data-i18n="conn.hint"></p>
+        </section>
+
+        <section class="glass card">
+          <h2 data-i18n="hub.quickstart">Quick start</h2>
+          <ol class="steps">
+            <li>
+              <span class="n">1</span>
+              <span>
+                <span data-i18n="step1"></span>
+                <button class="copy" data-copy="./install.sh">./install.sh</button>
+              </span>
+            </li>
+            <li>
+              <span class="n">2</span>
+              <span>
+                <span data-i18n="step2"></span>
+                <button class="copy" data-copy="/drill write a small test for utils">/drill write a small test for utils</button>
+              </span>
+            </li>
+            <li><span class="n">3</span><span data-i18n="step3"></span></li>
+            <li><span class="n">4</span><span data-i18n="step4"></span></li>
+          </ol>
+        </section>
+
+        <section class="glass card">
+          <h2 data-i18n="hub.settings">Settings</h2>
+          <div class="setrow">
+            <span data-i18n="set.language">Language</span>
+            <span class="seg" id="segLang">
+              <button data-setlang="en">English</button>
+              <button data-setlang="fa">فارسی</button>
+            </span>
+          </div>
+          <div class="setrow">
+            <span data-i18n="set.textSize">Text size</span>
+            <span class="seg">
+              <button id="btnSmaller2">A−</button>
+              <button id="setFont">15px</button>
+              <button id="btnBigger2">A+</button>
+            </span>
+          </div>
+          <div class="setrow">
+            <span data-i18n="set.layout">Default layout</span>
+            <span class="seg" id="segLayout">
+              <button data-setlayout="auto" data-i18n="set.layoutAuto">Auto</button>
+              <button data-setlayout="panel" data-i18n="set.layoutPanel">Panel</button>
+              <button data-setlayout="subtitle" data-i18n="set.layoutSubtitle">Subtitle</button>
+            </span>
+          </div>
+          <div class="setrow electron-only">
+            <span data-i18n="set.pin">Always on top</span>
+            <button class="btn" id="btnPin2">📌</button>
+          </div>
+          <div class="setrow">
+            <span class="dim" data-i18n="set.openHint"></span>
+            <button class="btn" id="btnOpenBrowser" data-i18n="hub.openBrowser">Open in browser</button>
+          </div>
+          <div class="setrow">
+            <span class="dim" data-i18n="set.adminHint"></span>
+            <button class="btn" id="btnOpenAdmin" data-i18n="hub.openAdmin">Admin panel</button>
+          </div>
+          <div class="setrow">
+            <span data-i18n="set.theme">Theme</span>
+            <span class="seg" id="segTheme">
+              <button data-settheme="light" data-i18n="set.themeLight">Light</button>
+              <button data-settheme="dark" data-i18n="set.themeDark">Dark</button>
+            </span>
+          </div>
+        </section>
+
+        <section class="glass card">
+          <h2 data-i18n="hub.try">Try it</h2>
+          <button class="btn primary" id="btnSample" data-i18n="hub.sampleBtn">Load a sample drill</button>
+          <p class="dim" data-i18n="hub.sampleHint"></p>
+        </section>
+      </div>
+
+      <div class="hub-foot dim" id="emptyStatus"></div>
+    </div>
+  </div>
+
+  <!-- drill view: full panel -->
+  <div id="app" class="app hidden">
+    <header class="head">
+      <div class="head-main">
+        <h1 id="dTitle">—</h1>
+        <div class="badges">
+          <span class="badge" id="dLang"></span>
+          <span class="badge" id="dMode"></span>
+          <span class="badge badge-file" id="dFile"></span>
+        </div>
+      </div>
+      <div class="win" id="winBtns">
+        <button id="btnSmaller" title="Smaller text" data-i18n-title="ui.smaller">A−</button>
+        <button id="btnBigger" title="Larger text" data-i18n-title="ui.bigger">A+</button>
+        <button id="btnLayout" title="Subtitle band" data-i18n-title="ui.layout">🎞</button>
+        <button id="btnPin" title="Always on top" data-i18n-title="ui.pin">📌</button>
+        <button id="btnAdmin" title="Admin panel" data-i18n-title="hub.openAdmin">⚙</button>
+        <button id="btnLang" title="Switch language" data-i18n-title="ui.lang">EN</button>
+        <button id="btnHide" title="Hide (Esc)" data-i18n-title="ui.hide">✕</button>
+      </div>
+    </header>
+
+    <div class="goal" id="dGoal"></div>
+
+    <!-- راهنمای هدایتِ تایپ: چرا این خط؟ + نتیجه‌اش چیست؟ -->
+    <div class="guide hidden" id="guideBox">
+      <div class="guide-row" id="guideWhyRow">
+        <span class="gtag why" data-i18n="guide.why">Why</span>
+        <span class="gtext" id="guideWhy"></span>
+        <span class="grange dim" id="guideRange"></span>
+      </div>
+      <div class="guide-row" id="guideResRow">
+        <span class="gtag res" data-i18n="guide.result">Result</span>
+        <span class="gtext" id="guideRes"></span>
+      </div>
+    </div>
+
+    <!-- یادداشتِ لنگردار به خطِ جاری (گفت‌وگو با مدل) — متن را app.js می‌نویسد -->
+    <div class="note hidden" id="noteBox">
+      <div class="guide-row" id="noteRow">
+        <span class="gtag ann" data-i18n="note.tag">Note</span>
+        <span class="gtext" id="noteText"></span>
+        <span class="grange dim" id="noteRange" dir="ltr"></span>
+      </div>
+    </div>
+
+    <main class="prompter" id="prompter">
+      <ol id="lines" class="lines"></ol>
+    </main>
+
+    <section class="practice" id="practiceBox">
+      <div class="practice-head">
+        <span id="lineNo">Line 1</span>
+        <span class="dim" id="modeNote"></span>
+      </div>
+      <div class="expected" id="expected" dir="ltr"></div>
+      <textarea id="typer" dir="ltr" spellcheck="false" autocomplete="off" autocorrect="off"
+        autocapitalize="off" data-i18n-ph="practice.ph" placeholder="Type here — Enter for the next line"></textarea>
+      <div class="practice-hint dim" data-i18n="practice.hint">
+        Typing here = practice · typing in your editor = real work (both are tracked)
+      </div>
+    </section>
+
+    <footer class="stats">
+      <div class="stat"><b id="sPct">0%</b><span data-i18n="stat.progress">Progress</span></div>
+      <div class="stat"><b id="sWpm">0</b><span data-i18n="stat.wpm">WPM</span></div>
+      <div class="stat"><b id="sAcc">100%</b><span data-i18n="stat.acc">Accuracy</span></div>
+      <div class="stat"><b id="sFile">—</b><span data-i18n="stat.file">File</span></div>
+      <div class="bar"><i id="sBar"></i></div>
+    </footer>
+  </div>
+
+  <!-- drill view: subtitle band — no chrome, bottom of screen, follows typing -->
+  <div id="sub" class="sub hidden">
+    <div class="sub-drag"></div>
+    <div class="sub-title" id="subTitle" dir="auto"></div>
+    <div class="sub-goal" id="subGoal" dir="auto"></div>
+    <div class="sub-line sub-cur" id="subCur" dir="ltr"></div>
+    <div class="sub-line sub-next" id="subNext" dir="ltr"></div>
+    <div class="sub-dest" id="subDest" dir="ltr"></div>
+    <div class="sub-res" id="subRes" dir="auto"></div>
+    <div class="sub-meta" id="subMeta" dir="ltr"></div>
+    <div class="sub-actions">
+      <button id="btnPanel" title="Open full panel" data-i18n-title="ui.openPanel">⌨</button>
+      <button id="btnSubPos" title="Move band top/bottom" data-i18n-title="ui.subPos">⇅</button>
+      <button id="btnSubSize" class="grip" title="Resize band" data-i18n-title="ui.subSize">⤡</button>
+      <button id="btnSubHide" title="Hide (Esc)" data-i18n-title="ui.hide">✕</button>
+    </div>
+  </div>
+
+  <!-- completion toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/lang.js"></script>
+  <script>
+    /* قالب روشن/تیره — قبل از app.js تا بدون فلش اعمال شود؛ app.js به آن دست نمی‌زند */
+    (function () {
+      var root = document.documentElement;
+      function current() {
+        try {
+          var v = localStorage.getItem("tpTheme");
+          if (v === "dark" || v === "light") return v;
+        } catch (_) {}
+        return "light";
+      }
+      function paint() {
+        var v = current();
+        if (v === "light") root.setAttribute("data-theme", "light");
+        else root.removeAttribute("data-theme");
+        document.querySelectorAll("#segTheme [data-settheme]").forEach(function (b) {
+          b.classList.toggle("on", b.getAttribute("data-settheme") === v);
+        });
+      }
+      window.__tpTheme = {
+        get: current,
+        set: function (v) {
+          try { localStorage.setItem("tpTheme", v === "dark" ? "dark" : "light"); } catch (_) {}
+          paint();
+        },
+      };
+      document.addEventListener("click", function (e) {
+        var b = e.target && e.target.closest ? e.target.closest("#segTheme [data-settheme]") : null;
+        if (b) window.__tpTheme.set(b.getAttribute("data-settheme"));
+      });
+      paint();
+    })();
+  </script>
+  <script>
+    /* پل موقت دکمه‌های نوار: تا وقتی app.js تازه deploy شود، این‌ها مستقیم
+     * با preload حرف می‌زنند (setSubPos/setSubSize از قبل در preload هست).
+     * بعد از deploy کامل app.js این بلوک برداشته می‌شود (منطق به app.js می‌رود). */
+    (function () {
+      function pos() {
+        var next = "top";
+        try {
+          var cur = null;
+          try { cur = localStorage.getItem("tpSubPos"); } catch (_) {}
+          next = cur === "top" ? "bottom" : "top";
+          localStorage.setItem("tpSubPos", next);
+        } catch (_) {}
+        document.body.classList.toggle("sub-top", next === "top");
+        if (window.tp && typeof window.tp.setSubPos === "function") {
+          try { window.tp.setSubPos(next); } catch (_) {}
+        }
+      }
+      function bindClick(id, fn) {
+        var b = document.getElementById(id);
+        if (b && !b.__tpBridge) { b.__tpBridge = true; b.addEventListener("click", fn); }
+      }
+      bindClick("btnSubPos", pos);
+      function admin() {
+        try { fetch("/api/admin/open", { method: "POST" }).catch(function () {}); } catch (_) {}
+      }
+      bindClick("btnAdmin", admin);
+      bindClick("btnOpenAdmin", admin);
+      var grip = document.getElementById("btnSubSize");
+      if (grip && !grip.__tpBridge) {
+        grip.__tpBridge = true;
+        grip.addEventListener("mousedown", function (e) {
+          e.preventDefault();
+          var x0 = e.clientX, y0 = e.clientY;
+          var w0 = window.innerWidth, h0 = window.innerHeight;
+          var raf = 0;
+          function move(ev) {
+            if (raf) return;
+            raf = requestAnimationFrame(function () {
+              raf = 0;
+              var s = { w: Math.round(w0 + (ev.clientX - x0)), h: Math.round(h0 + (ev.clientY - y0)) };
+              try { localStorage.setItem("tpSubSize", JSON.stringify(s)); } catch (_) {}
+              if (window.tp && typeof window.tp.setSubSize === "function") {
+                try { window.tp.setSubSize(s); } catch (_) {}
+              }
+            });
+          }
+          function up() {
+            window.removeEventListener("mousemove", move);
+            window.removeEventListener("mouseup", up);
+            if (raf) { cancelAnimationFrame(raf); raf = 0; }
+          }
+          window.addEventListener("mousemove", move);
+          window.addEventListener("mouseup", up);
+        });
+      }
+    })();
+  </script>
+  <script>
+    /* کلیک‌پذیری نوار: پیش‌فرض رد می‌شود (پس‌ترو)؛ فقط روی دکمه‌ها/دستگیره فعال.
+     * حرکت موس با forward:true به صفحه می‌رسد، پس hover کار می‌کند. */
+    (function () {
+      var live = false;
+      function setInteractive(on) {
+        if (on === live) return;
+        live = on;
+        if (window.tp && typeof window.tp.setMouseInteractive === "function") {
+          try { window.tp.setMouseInteractive(on); } catch (_) {}
+        }
+      }
+      var raf = 0;
+      document.addEventListener("mousemove", function (e) {
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0;
+          var t = e.target && e.target.closest ? e.target.closest(".sub-actions, .sub-drag") : null;
+          setInteractive(!!t);
+        });
+      });
+      document.addEventListener("mouseleave", function () { setInteractive(false); });
+      window.addEventListener("blur", function () { setInteractive(false); });
+    })();
+  </script>
+  <script src="/app.js"></script>
+</body>
+</html>

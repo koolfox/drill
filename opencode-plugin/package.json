@@ -1,0 +1,14 @@
+{
+  "name": "opencode-teleprompter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Coding teleprompter for OpenCode: server plugin (/drill + tools) and TUI layer",
+  "exports": {
+    ".": "./index.ts",
+    "./tui": "./tui.tsx"
+  },
+  "dependencies": {
+    "@opencode/plugin": "latest"
+  }
+}
