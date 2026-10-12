@@ -54,7 +54,27 @@ require_node() {
   esac
 }
 
-SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SRC_OF_THIS_SCRIPT="${BASH_SOURCE[0]:-$0}"
+if [[ -f "$SRC_OF_THIS_SCRIPT" ]]; then
+  SRC="$(cd "$(dirname "$SRC_OF_THIS_SCRIPT")" && pwd)"
+else
+  SRC=""
+fi
+if [[ -z "$SRC" || ! -d "$SRC/opencode-plugin" ]]; then
+  # one-liner mode (curl … | bash): there is no repo next to this script,
+  # so fetch a source copy first, then re-run from there.
+  command -v git >/dev/null 2>&1 || { echo "git is required for one-line install: https://git-scm.com"; exit 1; }
+  SRC="$HOME/.drill-src"
+  if [[ -d "$SRC/.git" ]]; then
+    echo "==> updating $SRC"
+    git -C "$SRC" pull -q --ff-only 2>/dev/null || true
+  else
+    echo "==> fetching Drill sources…"
+    git clone -q https://github.com/koolfox/drill.git "$SRC"
+  fi
+  exec bash "$SRC/install.sh" "$@"
+fi
+SRC="$(cd "$SRC" && pwd)"
 DEST="${OPENCODE_HOME:-$HOME/.config/opencode}/plugins/teleprompter"
 PORT="${TELEPROMPTER_PORT:-4783}"
 ONLY=""
